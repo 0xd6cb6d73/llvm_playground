@@ -6,6 +6,7 @@
             "hidden": true,
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/",
+            "installDir": "${sourceDir}",
             "toolchainFile": "D:\\tooling\\toolchains\\llvm-win.cmake",
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"

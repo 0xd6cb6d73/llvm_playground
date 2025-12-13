@@ -9,3 +9,5 @@ execute_process(COMMAND ${CMAKE_FIND_ROOT_PATH}/../bin/llvm-config --cxxflags --
 target_compile_options(${PROJECT_NAME} PRIVATE ${LLVM_CONFIG})
 target_link_options(${PROJECT_NAME} PRIVATE ${LLVM_CONFIG})
 target_link_libraries(${PROJECT_NAME} PRIVATE libLLVM-21.dll.a)
+
+install(TARGETS ${PROJECT_NAME})
