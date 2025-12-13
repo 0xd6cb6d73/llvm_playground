@@ -1,0 +1,7 @@
+build
+bin
+.cache
+**.ll
+**.s
+**.bc
+**.exe
