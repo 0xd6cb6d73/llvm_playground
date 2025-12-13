@@ -24,6 +24,7 @@ private:
   std::unique_ptr<llvm::Module> mod;
   std::unique_ptr<llvm::IRBuilder<>> builder;
   llvm::Function *fn;
+
   void moduleInit();
   void compile(std::optional<std::string> ast);
   llvm::Value *gen();
