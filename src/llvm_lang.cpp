@@ -34,7 +34,7 @@ void LangLLVM::compile(std::optional<std::string> ast) {
   fn = create_function(
       "main", llvm::FunctionType::get(this->builder->getInt32Ty(), false));
 
-  auto byte_ptr_typ = llvm::PointerType::get(*this->ctx, 0);
+  auto byte_ptr_typ = llvm::PointerType::get(*this->ctx, 0); // opaque ptr
   auto printf_typ =
       llvm::FunctionType::get(this->builder->getInt32Ty(), byte_ptr_typ, true);
   this->setup_extern_fn("printf", printf_typ);
@@ -84,6 +84,6 @@ llvm::BasicBlock *LangLLVM::create_bb(const std::string_view name,
 
 void LangLLVM::saveModuleToFile(const std::string_view file_name) {
   std::error_code error_code;
-  llvm::raw_fd_ostream out_ll(file_name, error_code);
-  this->mod->print(out_ll, nullptr);
+  this->out_fd = std::make_unique<llvm::raw_fd_ostream>(file_name, error_code);
+  this->mod->print(*this->out_fd, nullptr);
 }

@@ -24,6 +24,7 @@ private:
   std::unique_ptr<llvm::Module> mod;
   std::unique_ptr<llvm::IRBuilder<>> builder;
   llvm::Function *fn;
+  std::unique_ptr<llvm::raw_fd_ostream> out_fd;
 
   void moduleInit();
   void compile(std::optional<std::string> ast);

@@ -50,5 +50,13 @@
             "configurePreset": "Windows_AMD64_Release",
             "inherits": "base-build"
         }
+    ],
+    "testPresets": [
+        {
+            "name": "test-windows-clang-debug",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "Windows_AMD64_Debug"
+        }
     ]
 }
