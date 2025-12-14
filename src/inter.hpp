@@ -6,6 +6,6 @@ namespace lang {
 class Interpreter {
 public:
   Interpreter() = default;
-  ParseExpVal eval(const ParseExpVal exp);
+  ParseExpVal eval(const ParseExp exp);
 };
 } // namespace lang
