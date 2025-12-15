@@ -16,10 +16,10 @@ TEST(inter, eval_op_plus) {
 
 TEST(inter, eval_op_minus) {
   lang::Interpreter inter;
-  auto lhs = lang::ParseExpVal(4);
-  auto rhs = lang::ParseExpVal(2);
+  auto lhs = lang::ParseExpVal(8);
+  auto rhs = lang::ParseExpVal(6);
   const auto pack = lang::ParseExp{
-      .type = lang::ParseExpType::OperatorMinus, .lhs = &lhs, .rhs = &lhs};
+      .type = lang::ParseExpType::OperatorMinus, .lhs = &lhs, .rhs = &rhs};
   const auto val = inter.eval(pack);
   EXPECT_EQ(std::get<int32_t>(val), 2);
 }
@@ -29,7 +29,7 @@ TEST(inter, eval_op_mul) {
   auto lhs = lang::ParseExpVal(2);
   auto rhs = lang::ParseExpVal(1);
   const auto pack = lang::ParseExp{
-      .type = lang::ParseExpType::OperatorMinus, .lhs = &lhs, .rhs = &lhs};
+      .type = lang::ParseExpType::OperatorMul, .lhs = &lhs, .rhs = &rhs};
   const auto val = inter.eval(pack);
   EXPECT_EQ(std::get<int32_t>(val), 2);
 }
@@ -39,7 +39,7 @@ TEST(inter, eval_op_div) {
   auto lhs = lang::ParseExpVal(6);
   auto rhs = lang::ParseExpVal(3);
   const auto pack = lang::ParseExp{
-      .type = lang::ParseExpType::OperatorMinus, .lhs = &lhs, .rhs = &lhs};
+      .type = lang::ParseExpType::OperatorDiv, .lhs = &lhs, .rhs = &rhs};
   const auto val = inter.eval(pack);
   EXPECT_EQ(std::get<int32_t>(val), 2);
 }
