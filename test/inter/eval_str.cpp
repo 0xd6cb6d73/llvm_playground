@@ -6,21 +6,33 @@
 // Demonstrate some basic assertions
 TEST(inter, eval_str_0) {
   lang::Interpreter inter;
-  const auto empty = std::string();
-  const auto val = inter.eval({lang::ParseExpType::Symbol, empty});
-  EXPECT_TRUE(std::ranges::equal(*std::get_if<std::string>(&val), empty));
+  auto empty = lang::ParseExpVal(std::string());
+  const auto ret = inter.eval({
+      lang::ParseExpType::Symbol,
+      &empty,
+  });
+  EXPECT_TRUE(std::ranges::equal(std::get<std::string>(ret),
+                                 std::get<std::string>(empty)));
 }
 
 TEST(inter, eval_str_15) {
   lang::Interpreter inter;
-  const auto str = std::string("01234567898765");
-  const auto val = inter.eval({lang::ParseExpType::Symbol, str});
-  EXPECT_TRUE(std::ranges::equal(*std::get_if<std::string>(&val), str));
+  auto str = lang::ParseExpVal(std::string("01234567898765"));
+  const auto ret = inter.eval({
+      lang::ParseExpType::Symbol,
+      &str,
+  });
+  EXPECT_TRUE(std::ranges::equal(std::get<std::string>(ret),
+                                 std::get<std::string>(str)));
 }
 
 TEST(inter, eval_str_32) {
   lang::Interpreter inter;
-  const auto str = std::string("0123456789876543210123456789876");
-  const auto val = inter.eval({lang::ParseExpType::Symbol, str});
-  EXPECT_TRUE(std::ranges::equal(*std::get_if<std::string>(&val), str));
+  auto str = lang::ParseExpVal(std::string("0123456789876543210123456789876"));
+  const auto ret = inter.eval({
+      lang::ParseExpType::Symbol,
+      &str,
+  });
+  EXPECT_TRUE(std::ranges::equal(std::get<std::string>(ret),
+                                 std::get<std::string>(str)));
 }

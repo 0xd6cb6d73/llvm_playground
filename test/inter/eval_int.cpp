@@ -6,26 +6,40 @@
 // Demonstrate some basic assertions
 TEST(inter, eval_num_0) {
   lang::Interpreter inter;
-  const auto val = inter.eval({lang::ParseExpType::Int, 0});
-  EXPECT_EQ(*std::get_if<int32_t>(&val), 0);
+  auto num = lang::ParseExpVal(0);
+  const auto ret = inter.eval({
+      lang::ParseExpType::Int,
+      &num,
+  });
+  EXPECT_EQ(std::get<int32_t>(ret), 0);
 }
 
 TEST(inter, eval_num_1) {
   lang::Interpreter inter;
-  const auto val = inter.eval({lang::ParseExpType::Int, 1});
-  EXPECT_EQ(*std::get_if<int32_t>(&val), 1);
+  auto num = lang::ParseExpVal(1);
+  const auto ret = inter.eval({
+      lang::ParseExpType::Int,
+      &num,
+  });
+  EXPECT_EQ(std::get<int32_t>(ret), 1);
 }
 
 TEST(inter, eval_num_intmax) {
   lang::Interpreter inter;
-  const auto num = INT32_MAX;
-  const auto val = inter.eval({lang::ParseExpType::Int, num});
-  EXPECT_EQ(*std::get_if<int32_t>(&val), num);
+  auto num = lang::ParseExpVal(INT32_MAX);
+  const auto ret = inter.eval({
+      lang::ParseExpType::Int,
+      &num,
+  });
+  EXPECT_EQ(std::get<int32_t>(ret), std::get<int32_t>(num));
 }
 
 TEST(inter, eval_num_intmin) {
   lang::Interpreter inter;
-  const auto num = INT32_MIN;
-  const auto val = inter.eval({lang::ParseExpType::Int, num});
-  EXPECT_EQ(*std::get_if<int32_t>(&val), num);
+  auto num = lang::ParseExpVal(INT32_MIN);
+  const auto ret = inter.eval({
+      lang::ParseExpType::Int,
+      &num,
+  });
+  EXPECT_EQ(std::get<int32_t>(ret), std::get<int32_t>(num));
 }

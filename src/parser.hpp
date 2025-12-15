@@ -6,24 +6,22 @@
 #include <vector>
 
 namespace lang {
-enum class ParseExpOperator : char {
-  Plus = '+',
-  Minus = '-',
-  Mul = '*',
-  Div = '/'
+enum class ParseExpType : uint8_t {
+  Int,
+  Symbol,
+  List,
+  OperatorPlus,
+  OperatorMinus,
+  OperatorMul,
+  OperatorDiv
 };
-struct OperatorPack {
-  ParseExpOperator op;
-  int32_t lhs;
-  int32_t rhs;
-};
-enum class ParseExpType : uint8_t { Int, Symbol, List, Operator };
 struct ParseExp;
-using ParseExpVal =
-    std::variant<int32_t, std::string, std::vector<ParseExp>, OperatorPack>;
+using ParseExpVal = std::variant<int32_t, std::string, ParseExp>;
+
 struct ParseExp {
   ParseExpType type;
-  ParseExpVal value;
+  ParseExpVal *lhs;
+  ParseExpVal *rhs;
 };
 
 class Parser {

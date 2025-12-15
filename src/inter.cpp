@@ -12,44 +12,60 @@
 
 namespace lang {
 class unknown_exp_type : std::exception {};
+class unaddable_type : std::exception {};
 ParseExpVal Interpreter::eval(const ParseExp exp) {
-  if (exp.type == ParseExpType::Operator) {
-    if (const auto val = std::get_if<OperatorPack>(&exp.value)) {
-      std::cout << "found operator ";
-      if (val->op == ParseExpOperator::Plus) {
-        std::cout << "plus" << std::endl;
-        return val->lhs + val->rhs;
-      } else if (val->op == ParseExpOperator::Minus) {
-        std::cout << "minus" << std::endl;
-        return val->lhs - val->rhs;
-      } else if (val->op == ParseExpOperator::Mul) {
-        std::cout << "mul" << std::endl;
-        return val->lhs * val->rhs;
-      } else if (val->op == ParseExpOperator::Div) {
-        std::cout << "div" << std::endl;
-        return val->lhs / val->rhs;
-      }
-    }
-    throw unknown_exp_type();
+  if (exp.type == ParseExpType::OperatorPlus) {
+    return this->add(exp.lhs, exp.rhs);
+  } else if (exp.type == ParseExpType::OperatorMinus) {
+    return this->minus(exp.lhs, exp.rhs);
+  } else if (exp.type == ParseExpType::OperatorMul) {
+    return this->mul(exp.lhs, exp.rhs);
+  } else if (exp.type == ParseExpType::OperatorDiv) {
+    return this->div(exp.lhs, exp.rhs);
   } else if (exp.type == ParseExpType::Int) {
-    return *std::get_if<int32_t>(&exp.value);
+    return std::get<int32_t>(*exp.lhs);
   } else if (exp.type == ParseExpType::Symbol) {
-    return *std::get_if<std::string>(&exp.value);
-  } else if (exp.type == ParseExpType::List) {
-    std::cout << "found list" << std::endl;
-    for (const auto &item : *std::get_if<std::vector<ParseExp>>(&exp.value)) {
-      const auto ret = this->eval(item);
-      this->append(ret);
-    }
-    std::cout << "state contents: " << std::endl;
-    for (const uint8_t &item : this->state) {
-      std::cout << std::to_string(item) << std::endl;
-    }
-    return std::string(
-        std::string_view(reinterpret_cast<const char *>(this->state.data()),
-                         this->state.size()));
+    return std::get<std::string>(*exp.lhs);
+  } else {
+    throw unknown_exp_type();
   }
-  throw unknown_exp_type();
+}
+
+int32_t Interpreter::add(const ParseExpVal *lhs, const ParseExpVal *rhs) {
+  const auto left_val = this->visit_int32(*lhs);
+  const auto right_val = this->visit_int32(*rhs);
+  return left_val + right_val;
+}
+
+int32_t Interpreter::minus(const ParseExpVal *lhs, const ParseExpVal *rhs) {
+  const auto left_val = this->visit_int32(*lhs);
+  const auto right_val = this->visit_int32(*rhs);
+  return left_val - right_val;
+}
+
+int32_t Interpreter::mul(const ParseExpVal *lhs, const ParseExpVal *rhs) {
+  const auto left_val = this->visit_int32(*lhs);
+  const auto right_val = this->visit_int32(*rhs);
+  return left_val * right_val;
+}
+
+int32_t Interpreter::div(const ParseExpVal *lhs, const ParseExpVal *rhs) {
+  const auto left_val = this->visit_int32(*lhs);
+  const auto right_val = this->visit_int32(*rhs);
+  return left_val / right_val;
+}
+
+int32_t Interpreter::visit_int32(const ParseExpVal &input) {
+  return std::visit(overloaded{
+                        [this](const int32_t val) -> int32_t { return val; },
+                        [this](const std::string &val) -> int32_t {
+                          return static_cast<int32_t>(std::stoi(val));
+                        },
+                        [this](ParseExp val) -> int32_t {
+                          return std::get<int32_t>(this->eval(val));
+                        },
+                    },
+                    input);
 }
 
 bool Interpreter::append(const ParseExpVal &val) {
