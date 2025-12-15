@@ -13,9 +13,6 @@ public:
   ParseExpVal eval(const ParseExp exp);
 
 private:
-  std::vector<uint8_t> state;
-  // this function only handles the primitive types, not lists or operators
-  bool append(const ParseExpVal &val);
   int32_t add(const ParseExpVal *lhs, const ParseExpVal *rhs);
   int32_t minus(const ParseExpVal *lhs, const ParseExpVal *rhs);
   int32_t mul(const ParseExpVal *lhs, const ParseExpVal *rhs);

@@ -1,14 +1,9 @@
 #include "inter.hpp"
 
 #include "parser.hpp"
-#include <algorithm>
 #include <exception>
-#include <iostream>
-#include <iterator>
-#include <span>
 #include <string>
 #include <variant>
-#include <vector>
 
 namespace lang {
 class unknown_exp_type : std::exception {};
@@ -66,24 +61,5 @@ int32_t Interpreter::visit_int32(const ParseExpVal &input) {
                         },
                     },
                     input);
-}
-
-bool Interpreter::append(const ParseExpVal &val) {
-  if (const auto cont = std::get_if<int32_t>(&val)) {
-    const auto old = this->state.size();
-    std::cout << "state size before: " << old << std::endl;
-    this->state.resize(old + sizeof(int32_t));
-    std::cout << "state size after: " << this->state.size() << std::endl;
-    std::cout << "state contains: " << std::to_string(*this->state.data() + old)
-              << std::endl;
-    return memcpy(std::next(this->state.data(), old), cont, sizeof(int32_t)) !=
-           nullptr;
-  } else if (const auto cont = std::get_if<std::string>(&val)) {
-    const auto data = std::span<const uint8_t>{
-        reinterpret_cast<const uint8_t *>(cont->data()), cont->size()};
-    std::ranges::copy(data, this->state.begin() + this->state.size());
-    return true;
-  }
-  return false;
 }
 } // namespace lang
