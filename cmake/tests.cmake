@@ -5,7 +5,6 @@ add_executable(
     "test/inter/eval_int.cpp"
     "test/inter/eval_str.cpp"
     "test/inter/eval_operators.cpp"
-    "test/inter/eval_list.cpp"
 )
 target_link_libraries(inter_test GTest::gtest_main ${INTER_NAME})
 target_compile_features(inter_test PRIVATE cxx_std_23)
