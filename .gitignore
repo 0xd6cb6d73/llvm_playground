@@ -6,3 +6,5 @@ bin
 **.bc
 **.exe
 .venv
+lib
+include

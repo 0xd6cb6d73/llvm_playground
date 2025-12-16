@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "lldb-dap",
+            "request": "launch",
+            "name": "llvm_lang",
+            "program": "${workspaceRoot}/build/llvm_lang.exe",
+            "args": [],
+            "env": [],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "lldb-dap",
+            "request": "launch",
+            "name": "inter_test",
+            "program": "${workspaceRoot}/build/inter_test.exe",
+            "args": [],
+            "env": [],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "lldb-dap",
+            "request": "launch",
+            "name": "parser_test",
+            "program": "${workspaceRoot}/build/parser_test.exe",
+            "args": [],
+            "env": [],
+            "cwd": "${workspaceRoot}"
+        }
+    ]
+}
