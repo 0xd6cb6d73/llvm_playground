@@ -9,7 +9,7 @@ TEST(inter, eval_str_0) {
   auto empty = lang::ParseExpVal(std::string());
   const auto ret = inter.eval({
       lang::ParseExpType::Symbol,
-      &empty,
+      std::move(empty),
   });
   EXPECT_TRUE(std::ranges::equal(std::get<std::string>(ret),
                                  std::get<std::string>(empty)));
@@ -20,10 +20,10 @@ TEST(inter, eval_str_15) {
   auto str = lang::ParseExpVal(std::string("01234567898765"));
   const auto ret = inter.eval({
       lang::ParseExpType::Symbol,
-      &str,
+      std::move(str),
   });
   EXPECT_TRUE(std::ranges::equal(std::get<std::string>(ret),
-                                 std::get<std::string>(str)));
+                                 std::string("01234567898765")));
 }
 
 TEST(inter, eval_str_32) {
@@ -31,8 +31,9 @@ TEST(inter, eval_str_32) {
   auto str = lang::ParseExpVal(std::string("0123456789876543210123456789876"));
   const auto ret = inter.eval({
       lang::ParseExpType::Symbol,
-      &str,
+      std::move(str),
   });
-  EXPECT_TRUE(std::ranges::equal(std::get<std::string>(ret),
-                                 std::get<std::string>(str)));
+  EXPECT_TRUE(
+      std::ranges::equal(std::get<std::string>(ret),
+                         std::string("0123456789876543210123456789876")));
 }

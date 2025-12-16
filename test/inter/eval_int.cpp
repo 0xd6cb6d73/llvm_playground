@@ -9,9 +9,9 @@ TEST(inter, eval_num_0) {
   auto num = lang::ParseExpVal(0);
   const auto ret = inter.eval({
       lang::ParseExpType::Int,
-      &num,
+      std::move(num),
   });
-  EXPECT_EQ(std::get<int32_t>(ret), 0);
+  EXPECT_EQ(std::get<intptr_t>(ret), 0);
 }
 
 TEST(inter, eval_num_1) {
@@ -19,9 +19,9 @@ TEST(inter, eval_num_1) {
   auto num = lang::ParseExpVal(1);
   const auto ret = inter.eval({
       lang::ParseExpType::Int,
-      &num,
+      std::move(num),
   });
-  EXPECT_EQ(std::get<int32_t>(ret), 1);
+  EXPECT_EQ(std::get<intptr_t>(ret), 1);
 }
 
 TEST(inter, eval_num_intmax) {
@@ -29,9 +29,9 @@ TEST(inter, eval_num_intmax) {
   auto num = lang::ParseExpVal(INT32_MAX);
   const auto ret = inter.eval({
       lang::ParseExpType::Int,
-      &num,
+      std::move(num),
   });
-  EXPECT_EQ(std::get<int32_t>(ret), std::get<int32_t>(num));
+  EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT32_MAX));
 }
 
 TEST(inter, eval_num_intmin) {
@@ -39,7 +39,7 @@ TEST(inter, eval_num_intmin) {
   auto num = lang::ParseExpVal(INT32_MIN);
   const auto ret = inter.eval({
       lang::ParseExpType::Int,
-      &num,
+      std::move(num),
   });
-  EXPECT_EQ(std::get<int32_t>(ret), std::get<int32_t>(num));
+  EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT32_MIN));
 }

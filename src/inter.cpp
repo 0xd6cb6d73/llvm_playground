@@ -8,7 +8,7 @@
 namespace lang {
 class unknown_exp_type : std::exception {};
 class unaddable_type : std::exception {};
-ParseExpVal Interpreter::eval(const ParseExp exp) {
+ParseExpVal Interpreter::eval(const ParseExp &exp) {
   if (exp.type == ParseExpType::OperatorPlus) {
     return this->add(exp.lhs, exp.rhs);
   } else if (exp.type == ParseExpType::OperatorMinus) {
@@ -18,48 +18,49 @@ ParseExpVal Interpreter::eval(const ParseExp exp) {
   } else if (exp.type == ParseExpType::OperatorDiv) {
     return this->div(exp.lhs, exp.rhs);
   } else if (exp.type == ParseExpType::Int) {
-    return std::get<int32_t>(*exp.lhs);
+    return std::get<intptr_t>(exp.lhs);
   } else if (exp.type == ParseExpType::Symbol) {
-    return std::get<std::string>(*exp.lhs);
+    return std::get<std::string>(exp.lhs);
   } else {
     throw unknown_exp_type();
   }
 }
 
-int32_t Interpreter::add(const ParseExpVal *lhs, const ParseExpVal *rhs) {
-  const auto left_val = this->visit_int32(*lhs);
-  const auto right_val = this->visit_int32(*rhs);
+intptr_t Interpreter::add(const ParseExpVal &lhs, const ParseExpVal &rhs) {
+  const auto left_val = this->visit_int32(lhs);
+  const auto right_val = this->visit_int32(rhs);
   return left_val + right_val;
 }
 
-int32_t Interpreter::minus(const ParseExpVal *lhs, const ParseExpVal *rhs) {
-  const auto left_val = this->visit_int32(*lhs);
-  const auto right_val = this->visit_int32(*rhs);
+intptr_t Interpreter::minus(const ParseExpVal &lhs, const ParseExpVal &rhs) {
+  const auto left_val = this->visit_int32(lhs);
+  const auto right_val = this->visit_int32(rhs);
   return left_val - right_val;
 }
 
-int32_t Interpreter::mul(const ParseExpVal *lhs, const ParseExpVal *rhs) {
-  const auto left_val = this->visit_int32(*lhs);
-  const auto right_val = this->visit_int32(*rhs);
+intptr_t Interpreter::mul(const ParseExpVal &lhs, const ParseExpVal &rhs) {
+  const auto left_val = this->visit_int32(lhs);
+  const auto right_val = this->visit_int32(rhs);
   return left_val * right_val;
 }
 
-int32_t Interpreter::div(const ParseExpVal *lhs, const ParseExpVal *rhs) {
-  const auto left_val = this->visit_int32(*lhs);
-  const auto right_val = this->visit_int32(*rhs);
+intptr_t Interpreter::div(const ParseExpVal &lhs, const ParseExpVal &rhs) {
+  const auto left_val = this->visit_int32(lhs);
+  const auto right_val = this->visit_int32(rhs);
   return left_val / right_val;
 }
 
-int32_t Interpreter::visit_int32(const ParseExpVal &input) {
-  return std::visit(overloaded{
-                        [this](const int32_t val) -> int32_t { return val; },
-                        [this](const std::string &val) -> int32_t {
-                          return static_cast<int32_t>(std::stoi(val));
-                        },
-                        [this](ParseExp val) -> int32_t {
-                          return std::get<int32_t>(this->eval(val));
-                        },
-                    },
-                    input);
+intptr_t Interpreter::visit_int32(const ParseExpVal &input) {
+  return std::visit(
+      overloaded{
+          [this](const intptr_t val) -> intptr_t { return val; },
+          [this](const std::string &val) -> intptr_t {
+            return static_cast<intptr_t>(std::stoi(val));
+          },
+          [this](const std::unique_ptr<ParseExp> &val) -> intptr_t {
+            return std::get<intptr_t>(this->eval(*val));
+          },
+      },
+      input);
 }
 } // namespace lang

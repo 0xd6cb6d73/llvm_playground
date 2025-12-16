@@ -10,13 +10,13 @@ template <class... Ts> struct overloaded : Ts... {
 class Interpreter {
 public:
   Interpreter() = default;
-  ParseExpVal eval(const ParseExp exp);
+  ParseExpVal eval(const ParseExp &exp);
 
 private:
-  int32_t add(const ParseExpVal *lhs, const ParseExpVal *rhs);
-  int32_t minus(const ParseExpVal *lhs, const ParseExpVal *rhs);
-  int32_t mul(const ParseExpVal *lhs, const ParseExpVal *rhs);
-  int32_t div(const ParseExpVal *lhs, const ParseExpVal *rhs);
-  int32_t visit_int32(const ParseExpVal &input);
+  intptr_t add(const ParseExpVal &lhs, const ParseExpVal &rhs);
+  intptr_t minus(const ParseExpVal &lhs, const ParseExpVal &rhs);
+  intptr_t mul(const ParseExpVal &lhs, const ParseExpVal &rhs);
+  intptr_t div(const ParseExpVal &lhs, const ParseExpVal &rhs);
+  intptr_t visit_int32(const ParseExpVal &input);
 };
 } // namespace lang
