@@ -24,12 +24,9 @@ struct ParseExp {
   ParseExpVal rhs;
 };
 
-struct ParseExpRef {
+struct ParseExpSide {
   ParseExpType type;
-  size_t lhs_start;
-  size_t lhs_stop;
-  size_t rhs_start;
-  size_t rhs_stop;
+  ParseExpVal val;
 };
 
 class Parser {
@@ -39,5 +36,6 @@ public:
 
 private:
   ParseExp parse_str(const std::string_view str);
+  ParseExpSide parse_member(const std::string_view str);
 };
 } // namespace lang
