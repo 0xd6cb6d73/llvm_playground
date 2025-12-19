@@ -23,7 +23,7 @@ private:
   std::unique_ptr<llvm::LLVMContext> ctx;
   std::unique_ptr<llvm::Module> mod;
   std::unique_ptr<llvm::IRBuilder<>> builder;
-  llvm::Function *fn;
+  llvm::Function *curr_fn;
   std::unique_ptr<llvm::raw_fd_ostream> out_fd;
 
   void moduleInit();

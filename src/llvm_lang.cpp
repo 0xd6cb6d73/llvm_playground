@@ -31,7 +31,7 @@ void LangLLVM::moduleInit() {
 }
 
 void LangLLVM::compile(std::optional<std::string> ast) {
-  fn = create_function(
+  this->curr_fn = create_function(
       "main", llvm::FunctionType::get(this->builder->getInt32Ty(), false));
 
   auto byte_ptr_typ = llvm::PointerType::get(*this->ctx, 0); // opaque ptr
