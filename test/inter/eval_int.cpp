@@ -43,3 +43,23 @@ TEST(inter, eval_num_intmin) {
   });
   EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT32_MIN));
 }
+
+TEST(inter, eval_num_int64max) {
+  lang::Interpreter inter;
+  auto num = lang::ParseExpVal(INT64_MAX);
+  const auto ret = inter.eval({
+      lang::ParseExpType::Int,
+      std::move(num),
+  });
+  EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT64_MAX));
+}
+
+TEST(inter, eval_num_int64min) {
+  lang::Interpreter inter;
+  auto num = lang::ParseExpVal(INT64_MIN);
+  const auto ret = inter.eval({
+      lang::ParseExpType::Int,
+      std::move(num),
+  });
+  EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT64_MIN));
+}
