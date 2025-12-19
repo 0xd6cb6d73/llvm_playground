@@ -39,5 +39,6 @@ public:
 
 private:
   ParseExp parse_str(const std::string_view str);
+  ParseExp parse_operands(const std::string_view str);
 };
 } // namespace lang
