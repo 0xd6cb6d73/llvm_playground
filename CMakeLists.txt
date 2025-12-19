@@ -16,7 +16,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-find_package(LLVM 21.1.7 EXACT CONFIG REQUIRED)
+find_package(LLVM 21.1.8 EXACT CONFIG REQUIRED)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 include_directories(${LLVM_INCLUDE_DIRS})

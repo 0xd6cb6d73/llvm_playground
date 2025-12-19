@@ -9,7 +9,8 @@
             "installDir": "${sourceDir}",
             "toolchainFile": "D:\\tooling\\toolchains\\llvm-win.cmake",
             "cacheVariables": {
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "LLVM_DIR": "D:/tooling/llvm-mingw-20251219-ucrt-x86_64/lib/cmake/llvm"
             },
             "condition": {
                 "type": "equals",
