@@ -42,6 +42,24 @@ ParseExp Parser::parse_str(const std::string_view str) {
     }
     return ParseExp{ParseExpType::Symbol,
                     std::string(str.begin() + 1, str.begin() + end_pos)};
+  } else if (const auto name = ExpFuncs(FunName::Call);
+             str.starts_with(name.str)) {
+
+  } else if (const auto name = ExpFuncs(FunName::Set);
+             str.starts_with(name.str)) {
+
+  } else if (const auto name = ExpFuncs(FunName::Def);
+             str.starts_with(name.str)) {
+
+  } else if (const auto name = ExpFuncs(FunName::If);
+             str.starts_with(name.str)) {
+
+  } else if (const auto name = ExpFuncs(FunName::While);
+             str.starts_with(name.str)) {
+
+  } else if (const auto name = ExpFuncs(FunName::For);
+             str.starts_with(name.str)) {
+
   } else {
     const auto ret = this->parse_int(str);
     return ParseExp{ret.type, std::get<intptr_t>(ret.val)};
@@ -108,4 +126,11 @@ size_t find_end_paren(const std::string_view str) {
   }
   return pos;
 }
+
+ParseExp Parser::parse_call(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_set(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_def(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_if(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_while(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_for(const std::string_view str) { return ParseExp{}; }
 } // namespace lang
