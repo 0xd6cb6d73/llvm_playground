@@ -29,6 +29,8 @@ struct ParseExpSide {
   ParseExpVal val;
 };
 
+size_t find_end_paren(const std::string_view str);
+
 class Parser {
 public:
   Parser() = default;
@@ -36,6 +38,6 @@ public:
 
 private:
   ParseExp parse_str(const std::string_view str);
-  ParseExpSide parse_member(const std::string_view str);
+  ParseExpSide parse_int(const std::string_view str);
 };
 } // namespace lang
