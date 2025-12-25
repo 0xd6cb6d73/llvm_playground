@@ -1,7 +1,12 @@
-#include "llvm_lang.hpp"
+#include "inter.hpp"
+
+#include "parser.hpp"
+#include <cstdint>
 
 int main() {
-  LangLLVM lang;
-  lang.exec(std::string(R"((print "Hello, world!"))"));
-  return 0;
+  lang::Parser parser;
+  lang::Interpreter inter;
+  const auto exp = parser.parse(std::string(R"((+ 1 1))"));
+  const auto ret = inter.eval(exp);
+  return std::get<intptr_t>(ret);
 }

@@ -37,6 +37,7 @@ add_library("${INTER_NAME}" SHARED src/inter.cpp)
 target_compile_features(${INTER_NAME} PRIVATE cxx_std_23)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE LLVMCore)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${INTER_NAME} ${PARSER_NAME})
 
 install(TARGETS ${PROJECT_NAME} ${PARSER_NAME})
 #add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND "${PROJECT_NAME}.exe | lli out.ll")
