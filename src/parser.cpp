@@ -21,7 +21,9 @@ ParseExpType get_exp_type(const std::string_view str) {
     return type;
   } else if (type == ParseExpType::OperatorDiv && str.at(1) == ' ') {
     return type;
-  } else if (static_cast<char>(type) == '"') {
+  } else if (static_cast<char>(type) == '"' ||
+             (static_cast<char>(str.at(0)) == '\\' &&
+              static_cast<char>(str.at(1)) == '"')) {
     return ParseExpType::Symbol;
   }
   const auto first_space_pos = str.find_first_of(' ', 0);
@@ -80,10 +82,13 @@ ParseExp Parser::parse_str(const std::string_view str) {
   case OperatorDiv:
     return this->parse_operator(str, type);
   case FuncCall: {
+    return this->parse_call(str);
   }
   case FuncSet: {
+    return this->parse_set(str);
   }
   case FuncDef: {
+    return this->parse_def(str);
   } break;
   }
   throw unknown_exp_type();
@@ -113,7 +118,19 @@ size_t find_end_paren(const std::string_view str) {
   return pos;
 }
 
-ParseExp Parser::parse_call(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_call(const std::string_view str) {
+  const auto first_pos = str.find_first_not_of(' ', 4);
+  if (first_pos == std::string::npos) {
+    throw invalid_expression();
+  }
+  const auto second_pos = str.find_first_of(' ', first_pos + 1);
+  const std::string symbol(str.begin() + first_pos, str.begin() + second_pos);
+  auto args = std::make_unique<ParseExp>(this->parse_str(
+      {str.begin() + second_pos + 1, str.begin() + str.size()}));
+  return ParseExp{.type = ParseExpType::FuncCall,
+                  .lhs = ParseExpVal(symbol),
+                  .rhs = std::move(args)};
+}
 ParseExp Parser::parse_set(const std::string_view str) { return ParseExp{}; }
 ParseExp Parser::parse_def(const std::string_view str) { return ParseExp{}; }
 ParseExp Parser::parse_if(const std::string_view str) { return ParseExp{}; }

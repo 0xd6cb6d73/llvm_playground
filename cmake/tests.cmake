@@ -14,6 +14,7 @@ add_executable(
     "test/parser/parse_int.cpp"
     "test/parser/parse_str.cpp"
     "test/parser/parse_operators.cpp"
+    "test/parser/parse_func.cpp"
 )
 target_link_libraries(parser_test GTest::gtest_main ${PARSER_NAME})
 target_compile_features(parser_test PRIVATE cxx_std_23)
