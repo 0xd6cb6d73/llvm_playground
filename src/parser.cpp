@@ -11,6 +11,37 @@ class invalid_expression : std::exception {};
 class unmatched_quotes : std::exception {};
 class unknown_exp_type : std::exception {};
 
+ParseExpType get_exp_type(const std::string_view str) {
+  const auto type = ParseExpType(str.at(0));
+  if (type == ParseExpType::OperatorPlus && str.at(1) == ' ') {
+    return type;
+  } else if (type == ParseExpType::OperatorMinus && str.at(1) == ' ') {
+    return type;
+  } else if (type == ParseExpType::OperatorMul && str.at(1) == ' ') {
+    return type;
+  } else if (type == ParseExpType::OperatorDiv && str.at(1) == ' ') {
+    return type;
+  } else if (static_cast<char>(type) == '"') {
+    return ParseExpType::Symbol;
+  }
+  const auto first_space_pos = str.find_first_of(' ', 0);
+  if (first_space_pos == std::string::npos) {
+    return ParseExpType::Int;
+  }
+  if (const auto name = ExpFuncs(FunName::Call); str.starts_with(name.str)) {
+    return ParseExpType::FuncCall;
+
+  } else if (const auto name = ExpFuncs(FunName::Set);
+             str.starts_with(name.str)) {
+    return ParseExpType::FuncSet;
+
+  } else if (const auto name = ExpFuncs(FunName::Def);
+             str.starts_with(name.str)) {
+    return ParseExpType::FuncDef;
+  }
+  throw unknown_exp_type();
+}
+
 ParseExp Parser::parse(const std::string_view str) {
   const auto first = str.at(0);
   // we only parse S-expressions, which look like this
@@ -24,17 +55,15 @@ ParseExp Parser::parse(const std::string_view str) {
 ParseExp Parser::parse_str(const std::string_view str) {
   // parsing needs to be done left to right, this function expects an operator
   // and one or more operands
-  const auto type = ParseExpType(str.at(0));
+  const auto type = get_exp_type(str);
   bool is_operator = false;
-  if (type == ParseExpType::OperatorPlus && str.at(1) == ' ') {
-    is_operator = true;
-  } else if (type == ParseExpType::OperatorMinus && str.at(1) == ' ') {
-    is_operator = true;
-  } else if (type == ParseExpType::OperatorMul && str.at(1) == ' ') {
-    is_operator = true;
-  } else if (type == ParseExpType::OperatorDiv && str.at(1) == ' ') {
-    is_operator = true;
-  } else if (static_cast<char>(type) == '"') {
+  switch (type) {
+    using enum ParseExpType;
+  case Int: {
+    const auto ret = this->parse_int(str);
+    return ParseExp{ret.type, std::get<intptr_t>(ret.val)};
+  }
+  case Symbol: {
     // our strings need to be double-quoted
     const auto end_pos = str.find_first_of('"', 1);
     if (end_pos == std::string::npos) {
@@ -42,28 +71,57 @@ ParseExp Parser::parse_str(const std::string_view str) {
     }
     return ParseExp{ParseExpType::Symbol,
                     std::string(str.begin() + 1, str.begin() + end_pos)};
-  } else if (const auto name = ExpFuncs(FunName::Call);
-             str.starts_with(name.str)) {
-
-  } else if (const auto name = ExpFuncs(FunName::Set);
-             str.starts_with(name.str)) {
-
-  } else if (const auto name = ExpFuncs(FunName::Def);
-             str.starts_with(name.str)) {
-
-  } else if (const auto name = ExpFuncs(FunName::If);
-             str.starts_with(name.str)) {
-
-  } else if (const auto name = ExpFuncs(FunName::While);
-             str.starts_with(name.str)) {
-
-  } else if (const auto name = ExpFuncs(FunName::For);
-             str.starts_with(name.str)) {
-
-  } else {
-    const auto ret = this->parse_int(str);
-    return ParseExp{ret.type, std::get<intptr_t>(ret.val)};
   }
+  case OperatorPlus:
+    return this->parse_operator(str, type);
+  case OperatorMinus:
+    return this->parse_operator(str, type);
+  case OperatorMul:
+    return this->parse_operator(str, type);
+  case OperatorDiv:
+    return this->parse_operator(str, type);
+  case FuncCall: {
+  }
+  case FuncSet: {
+  }
+  case FuncDef: {
+  } break;
+  }
+  throw unknown_exp_type();
+}
+
+ParseExpSide Parser::parse_int(const std::string_view str) {
+  intptr_t val{};
+  const std::string_view num(str.data(), str.data() + str.size());
+  std::from_chars(num.data(), num.data() + num.size(), val);
+  return ParseExpSide{ParseExpType::Int, val};
+}
+
+size_t find_end_paren(const std::string_view str) {
+  // https://stackoverflow.com/questions/12752225/how-do-i-find-the-position-of-matching-parentheses-or-braces-in-a-given-piece-of
+  auto pos = str.find_first_of('(');
+  if (pos == std::string::npos) {
+    return 0;
+  }
+  int32_t paren_count = 1;
+  while (paren_count > 0) {
+    if (str.at(++pos) == '(') {
+      paren_count++;
+    } else if (str.at(pos) == ')') {
+      paren_count--;
+    }
+  }
+  return pos;
+}
+
+ParseExp Parser::parse_call(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_set(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_def(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_if(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_while(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_for(const std::string_view str) { return ParseExp{}; }
+ParseExp Parser::parse_operator(const std::string_view str,
+                                const ParseExpType type) {
   bool is_first_exp = false;
   bool is_second_exp = false;
   // expected syntax is (+ lhs rhs) where lhs and rhs can both either be an
@@ -102,35 +160,4 @@ ParseExp Parser::parse_str(const std::string_view str) {
                     : std::make_unique<ParseExp>(this->parse_str(second_view));
   return ParseExp{type, std::move(first), std::move(second)};
 }
-
-ParseExpSide Parser::parse_int(const std::string_view str) {
-  intptr_t val{};
-  const std::string_view num(str.data(), str.data() + str.size());
-  std::from_chars(num.data(), num.data() + num.size(), val);
-  return ParseExpSide{ParseExpType::Int, val};
-}
-
-size_t find_end_paren(const std::string_view str) {
-  // https://stackoverflow.com/questions/12752225/how-do-i-find-the-position-of-matching-parentheses-or-braces-in-a-given-piece-of
-  auto pos = str.find_first_of('(');
-  if (pos == std::string::npos) {
-    return 0;
-  }
-  int32_t paren_count = 1;
-  while (paren_count > 0) {
-    if (str.at(++pos) == '(') {
-      paren_count++;
-    } else if (str.at(pos) == ')') {
-      paren_count--;
-    }
-  }
-  return pos;
-}
-
-ParseExp Parser::parse_call(const std::string_view str) { return ParseExp{}; }
-ParseExp Parser::parse_set(const std::string_view str) { return ParseExp{}; }
-ParseExp Parser::parse_def(const std::string_view str) { return ParseExp{}; }
-ParseExp Parser::parse_if(const std::string_view str) { return ParseExp{}; }
-ParseExp Parser::parse_while(const std::string_view str) { return ParseExp{}; }
-ParseExp Parser::parse_for(const std::string_view str) { return ParseExp{}; }
 } // namespace lang
