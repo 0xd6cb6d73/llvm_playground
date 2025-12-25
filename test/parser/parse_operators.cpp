@@ -50,7 +50,7 @@ TEST(parser, parse_operator_recurse_plus) {
       std::format("(+ (+ {} (+ (+ {} (+ {} {})) {})) {})", 1, 2, 3, 4, 5, 6));
 
   const auto outer_type = ret.type;
-  std::unique_ptr<lang::ParseExp> outer_lhs =
+  const std::unique_ptr<lang::ParseExp> outer_lhs =
       std::move(std::get<std::unique_ptr<lang::ParseExp>>(ret.lhs));
   const auto outer_rhs = std::get<intptr_t>(ret.rhs);
 
@@ -96,7 +96,7 @@ TEST(parser, parse_operator_recurse_plus_minus) {
       std::format("(+ (- {} (+ (- {} (+ {} {})) {})) {})", 1, 2, 3, 4, 5, 6));
 
   const auto outer_type = ret.type;
-  std::unique_ptr<lang::ParseExp> outer_lhs =
+  const std::unique_ptr<lang::ParseExp> outer_lhs =
       std::move(std::get<std::unique_ptr<lang::ParseExp>>(ret.lhs));
   const auto outer_rhs = std::get<intptr_t>(ret.rhs);
 
@@ -142,7 +142,7 @@ TEST(parser, parse_operator_recurse_mul_div) {
       std::format("(* (/ {} (* (/ {} (* {} {})) {})) {})", 1, 2, 3, 4, 5, 6));
 
   const auto outer_type = ret.type;
-  std::unique_ptr<lang::ParseExp> outer_lhs =
+  const std::unique_ptr<lang::ParseExp> outer_lhs =
       std::move(std::get<std::unique_ptr<lang::ParseExp>>(ret.lhs));
   const auto outer_rhs = std::get<intptr_t>(ret.rhs);
 
