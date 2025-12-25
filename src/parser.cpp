@@ -56,7 +56,6 @@ ParseExp Parser::parse_str(const std::string_view str) {
   // parsing needs to be done left to right, this function expects an operator
   // and one or more operands
   const auto type = get_exp_type(str);
-  bool is_operator = false;
   switch (type) {
     using enum ParseExpType;
   case Int: {
