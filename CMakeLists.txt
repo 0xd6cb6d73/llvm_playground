@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.31)
 cmake_policy(SET CMP0135 NEW)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-set(PROJECT_NAME llvm_lang)
+set(PROJECT_NAME my_lang)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 include(FetchContent)
@@ -24,7 +24,7 @@ separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})
 add_definitions(${LLVM_DEFINITIONS_LIST})
 link_directories(${LLVM_LIBRARY_DIRS})
 
-add_executable(${PROJECT_NAME} src/main.cpp src/llvm_lang.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wall" "-Wextra")
 
@@ -71,7 +71,7 @@ target_link_libraries("${COMP_NAME}.lib" PRIVATE LLVMCore)
 target_link_libraries(${PROJECT_NAME} PRIVATE LLVMCore)
 target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE "${INTER_NAME}.lib" "${PARSER_NAME}::lib"
+    PRIVATE "${INTER_NAME}.lib" "${PARSER_NAME}::lib" "${COMP_NAME}::lib"
 )
 
 install(TARGETS ${PROJECT_NAME} "${PARSER_NAME}.lib")
