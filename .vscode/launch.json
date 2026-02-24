@@ -31,6 +31,15 @@
             "args": [],
             "env": [],
             "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "lldb-dap",
+            "request": "launch",
+            "name": "comp_test",
+            "program": "${workspaceRoot}/build/compiler_test.exe",
+            "args": [],
+            "env": [],
+            "cwd": "${workspaceRoot}"
         }
     ]
 }

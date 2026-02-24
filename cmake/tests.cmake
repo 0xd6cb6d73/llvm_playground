@@ -19,6 +19,14 @@ add_executable(
 target_link_libraries(parser_test GTest::gtest_main "${PARSER_NAME}::lib")
 target_compile_features(parser_test PRIVATE cxx_std_23)
 
+add_executable(
+    compiler_test
+    "test/comp/comp_operators.cpp"
+)
+target_link_libraries(compiler_test GTest::gtest_main "${COMP_NAME}::lib" "${PARSER_NAME}::lib")
+target_compile_features(compiler_test PRIVATE cxx_std_23)
+
 include(GoogleTest)
 gtest_discover_tests(inter_test)
 gtest_discover_tests(parser_test)
+gtest_discover_tests(compiler_test)

@@ -1,9 +1,11 @@
 #include "inter.hpp"
 
 #include "parser.hpp"
+#include "shared.hpp"
 #include <exception>
 #include <string>
 #include <variant>
+
 
 namespace lang {
 class unknown_exp_type : std::exception {};

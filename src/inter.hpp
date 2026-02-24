@@ -3,10 +3,6 @@
 #include "parser.hpp"
 
 namespace lang {
-template <class... Ts> struct overloaded : Ts... {
-  using Ts::operator()...;
-};
-
 class Interpreter {
 public:
   Interpreter() = default;
