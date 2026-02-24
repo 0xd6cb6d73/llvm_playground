@@ -30,12 +30,9 @@ private:
   void compile(std::optional<std::string> ast);
   llvm::Value *gen();
   void setup_extern_fn(const std::string_view name, llvm::FunctionType *typ);
-  llvm::Function *create_function(const std::string_view name,
-                                  llvm::FunctionType *typ);
-  llvm::Function *create_prototype(const std::string_view name,
-                                   llvm::FunctionType *typ);
+  llvm::Function *create_function(const std::string_view name, llvm::FunctionType *typ);
+  llvm::Function *create_prototype(const std::string_view name, llvm::FunctionType *typ);
   void create_block(llvm::Function *fn);
-  llvm::BasicBlock *create_bb(const std::string_view name,
-                              llvm::Function *fn = nullptr);
+  llvm::BasicBlock *create_bb(const std::string_view name, llvm::Function *fn = nullptr);
   void saveModuleToFile(const std::string_view file_name);
 };

@@ -51,16 +51,15 @@ intptr_t Interpreter::div(const ParseExpVal &lhs, const ParseExpVal &rhs) {
 }
 
 intptr_t Interpreter::visit_int32(const ParseExpVal &input) {
-  return std::visit(
-      overloaded{
-          [this](const intptr_t val) -> intptr_t { return val; },
-          [this](const std::string &val) -> intptr_t {
-            return static_cast<intptr_t>(std::stoi(val));
-          },
-          [this](const std::unique_ptr<ParseExp> &val) -> intptr_t {
-            return std::get<intptr_t>(this->eval(*val));
-          },
-      },
-      input);
+  return std::visit(overloaded{
+                        [this](const intptr_t val) -> intptr_t { return val; },
+                        [this](const std::string &val) -> intptr_t {
+                          return static_cast<intptr_t>(std::stoi(val));
+                        },
+                        [this](const std::unique_ptr<ParseExp> &val) -> intptr_t {
+                          return std::get<intptr_t>(this->eval(*val));
+                        },
+                    },
+                    input);
 }
 } // namespace lang

@@ -8,9 +8,9 @@
 
 namespace lang {
 namespace impl {
-constexpr std::array<std::string, 6> ExpFunctions{
-    std::string("call"), std::string("set"),   std::string("def"),
-    std::string("if"),   std::string("while"), std::string("for")};
+constexpr std::array<std::string, 6> ExpFunctions{std::string("call"),  std::string("set"),
+                                                  std::string("def"),   std::string("if"),
+                                                  std::string("while"), std::string("for")};
 }
 enum class ParseExpType : uint8_t {
   Int,
@@ -22,27 +22,16 @@ enum class ParseExpType : uint8_t {
   FuncCall,
   FuncSet,
   FuncDef,
-
 };
 
-enum class FunName : uint8_t {
-  Call = 0,
-  Set = 1,
-  Def = 2,
-  If = 3,
-  While = 4,
-  For = 5
-};
+enum class FunName : uint8_t { Call = 0, Set = 1, Def = 2, If = 3, While = 4, For = 5 };
 class ExpFuncs {
 public:
-  ExpFuncs(FunName name) {
-    this->str = impl::ExpFunctions.at(static_cast<uint8_t>(name));
-  };
+  ExpFuncs(FunName name) { this->str = impl::ExpFunctions.at(static_cast<uint8_t>(name)); };
   std::string_view str;
 };
 struct ParseExp;
-using ParseExpVal =
-    std::variant<intptr_t, std::string, std::unique_ptr<ParseExp>>;
+using ParseExpVal = std::variant<intptr_t, std::string, std::unique_ptr<ParseExp>>;
 
 struct ParseExp {
   ParseExpType type;

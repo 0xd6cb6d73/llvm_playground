@@ -31,12 +31,11 @@ void LangLLVM::moduleInit() {
 }
 
 void LangLLVM::compile(std::optional<std::string> ast) {
-  this->curr_fn = create_function(
-      "main", llvm::FunctionType::get(this->builder->getInt32Ty(), false));
+  this->curr_fn =
+      create_function("main", llvm::FunctionType::get(this->builder->getInt32Ty(), false));
 
   auto byte_ptr_typ = llvm::PointerType::get(*this->ctx, 0); // opaque ptr
-  auto printf_typ =
-      llvm::FunctionType::get(this->builder->getInt32Ty(), byte_ptr_typ, true);
+  auto printf_typ = llvm::FunctionType::get(this->builder->getInt32Ty(), byte_ptr_typ, true);
   this->setup_extern_fn("printf", printf_typ);
   auto result = this->gen();
   this->builder->CreateRet(this->builder->getInt32(0));
@@ -49,13 +48,11 @@ llvm::Value *LangLLVM::gen() { // return this->builder->getInt32(0);
   return this->builder->CreateCall(printf_fn, args);
 }
 
-void LangLLVM::setup_extern_fn(const std::string_view name,
-                               llvm::FunctionType *typ) {
+void LangLLVM::setup_extern_fn(const std::string_view name, llvm::FunctionType *typ) {
   this->mod->getOrInsertFunction(name, typ);
 }
 
-llvm::Function *LangLLVM::create_function(const std::string_view name,
-                                          llvm::FunctionType *typ) {
+llvm::Function *LangLLVM::create_function(const std::string_view name, llvm::FunctionType *typ) {
   auto fn = this->mod->getFunction(name);
   if (fn == nullptr) {
     fn = create_prototype(name, typ);
@@ -64,10 +61,8 @@ llvm::Function *LangLLVM::create_function(const std::string_view name,
   return fn;
 }
 
-llvm::Function *LangLLVM::create_prototype(const std::string_view name,
-                                           llvm::FunctionType *typ) {
-  auto fn = llvm::Function::Create(typ, llvm::Function::ExternalLinkage, name,
-                                   *this->mod);
+llvm::Function *LangLLVM::create_prototype(const std::string_view name, llvm::FunctionType *typ) {
+  auto fn = llvm::Function::Create(typ, llvm::Function::ExternalLinkage, name, *this->mod);
   llvm::verifyFunction(*fn);
   return fn;
 }
@@ -77,8 +72,7 @@ void LangLLVM::create_block(llvm::Function *fn) {
   this->builder->SetInsertPoint(entry);
 }
 
-llvm::BasicBlock *LangLLVM::create_bb(const std::string_view name,
-                                      llvm::Function *fn) {
+llvm::BasicBlock *LangLLVM::create_bb(const std::string_view name, llvm::Function *fn) {
   return llvm::BasicBlock::Create(*this->ctx, name, fn);
 }
 
