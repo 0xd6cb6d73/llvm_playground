@@ -6,7 +6,7 @@ add_executable(
     "test/inter/eval_str.cpp"
     "test/inter/eval_operators.cpp"
 )
-target_link_libraries(inter_test GTest::gtest_main ${INTER_NAME})
+target_link_libraries(inter_test GTest::gtest_main "${INTER_NAME}::lib")
 target_compile_features(inter_test PRIVATE cxx_std_23)
 
 add_executable(
@@ -16,7 +16,7 @@ add_executable(
     "test/parser/parse_operators.cpp"
     "test/parser/parse_func.cpp"
 )
-target_link_libraries(parser_test GTest::gtest_main ${PARSER_NAME})
+target_link_libraries(parser_test GTest::gtest_main "${PARSER_NAME}::lib")
 target_compile_features(parser_test PRIVATE cxx_std_23)
 
 include(GoogleTest)
