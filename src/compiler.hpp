@@ -27,7 +27,8 @@ private:
 
   void lower(std::unique_ptr<ParseExp> ast);
   void insert_function(const std::string_view name, llvm::FunctionType *signature,
-                       llvm::Function::LinkageTypes link, const std::string_view bb_name);
+                       llvm::Function::LinkageTypes link,
+                       std::optional<const std::string_view> bb_name);
   void insert_main();
   llvm::Value *insert_int(const intptr_t val);
   llvm::Value *insert_str(const std::string_view str);
