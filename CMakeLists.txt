@@ -66,7 +66,7 @@ target_sources(
 )
 target_sources("${COMP_NAME}.lib" PRIVATE src/compiler.cpp)
 target_compile_features("${COMP_NAME}.lib" PUBLIC cxx_std_23)
-target_link_libraries("${COMP_NAME}.lib" PRIVATE LLVMCore)
+target_link_libraries("${COMP_NAME}.lib" PUBLIC LLVMCore LLVMexecutionengine LLVMMCJIT LLVMInterpreter LLVMMC LLVMSupport ${LLVM_LIBRARIES})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE LLVMCore)
 target_link_libraries(

@@ -36,7 +36,7 @@ void Compiler::insert_main() {
 }
 
 llvm::Value *Compiler::insert_op(std::unique_ptr<ParseExp> exp) {
-  this->mod->print(llvm::outs(), nullptr);
+  // this->mod->print(llvm::outs(), nullptr);
   auto *lhs = std::visit(
       overloaded{
           [this](const intptr_t val) -> llvm::Value * { return this->builder->getInt64(val); },
@@ -79,28 +79,28 @@ llvm::Value *Compiler::insert_op(std::unique_ptr<ParseExp> exp) {
     auto lhs_load = this->builder->CreateLoad(lhs->getType(), lhs_alloc);
     auto rhs_load = this->builder->CreateLoad(rhs->getType(), rhs_alloc);
     auto val = this->builder->CreateAdd(lhs_load, rhs_load);
-    this->mod->print(llvm::outs(), nullptr);
+    // this->mod->print(llvm::outs(), nullptr);
     return val;
   }
   case OperatorMinus: {
     auto lhs_load = this->builder->CreateLoad(lhs->getType(), lhs_alloc);
     auto rhs_load = this->builder->CreateLoad(rhs->getType(), rhs_alloc);
     auto val = this->builder->CreateSub(lhs_load, rhs_load);
-    this->mod->print(llvm::outs(), nullptr);
+    // this->mod->print(llvm::outs(), nullptr);
     return val;
   }
   case OperatorMul: {
     auto lhs_load = this->builder->CreateLoad(lhs->getType(), lhs_alloc);
     auto rhs_load = this->builder->CreateLoad(rhs->getType(), rhs_alloc);
     auto val = this->builder->CreateMul(lhs_load, rhs_load);
-    this->mod->print(llvm::outs(), nullptr);
+    // this->mod->print(llvm::outs(), nullptr);
     return val;
   }
   case OperatorDiv: {
     auto lhs_load = this->builder->CreateLoad(lhs->getType(), lhs_alloc);
     auto rhs_load = this->builder->CreateLoad(rhs->getType(), rhs_alloc);
     auto val = this->builder->CreateFDiv(lhs_load, rhs_load);
-    this->mod->print(llvm::outs(), nullptr);
+    // this->mod->print(llvm::outs(), nullptr);
     return val;
   }
   case FuncCall: {
@@ -120,8 +120,8 @@ void Compiler::lower(std::unique_ptr<ParseExp> ast) {
   this->insert_main();
   auto val = this->insert_op(std::move(ast));
   auto ret = this->builder->CreateRet(val);
-  this->mod->print(llvm::outs(), nullptr);
-  // this->builder->Insert(ret);
+  // this->mod->print(llvm::outs(), nullptr);
+  //  this->builder->Insert(ret);
 }
 
 std::unique_ptr<llvm::Module>
