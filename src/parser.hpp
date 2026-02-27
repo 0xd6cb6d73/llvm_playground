@@ -62,4 +62,6 @@ private:
   ParseExp parse_for(const std::string_view str);
   ParseExp parse_operator(const std::string_view str, const ParseExpType type);
 };
+
+ParseExpType get_exp_type(const std::string_view str);
 } // namespace lang
