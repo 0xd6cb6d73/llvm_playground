@@ -60,11 +60,17 @@ ParseExp Parser::parse_str(const std::string_view str) {
     if (first_end_pos == std::string::npos) {
       throw unmatched_quotes();
     }
-    const auto first = std::string(str.begin() + 1, str.begin() + first_end_pos);
+    auto first = std::string(str.begin() + 1, str.begin() + first_end_pos);
     // check whether there's anything else after our symbol
-    if (str.at(first_end_pos + 1) == ')') {
+    if (str.at(first_end_pos) == ')' || first_end_pos + 1 == str.size()) {
       return ParseExp{ParseExpType::Symbol, std::move(first)};
     }
+    const auto second_is_exp = str.at(first_end_pos + 2) == '(';
+    const std::string_view second_view(str.begin() + first_end_pos + 2, str.end());
+    auto second = second_is_exp ? std::make_unique<ParseExp>(parse_str(second_view))
+                                : parse_str(second_view).lhs;
+    return {.type = ParseExpType::Symbol, .lhs = std::move(first), .rhs = std::move(second)};
+    // now parse the second operand
   }
   case OperatorPlus:
     return this->parse_operator(str, type);
