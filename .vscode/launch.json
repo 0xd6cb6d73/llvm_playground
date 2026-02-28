@@ -9,7 +9,7 @@
             "type": "lldb-dap",
             "request": "launch",
             "name": "llvm_lang",
-            "program": "${workspaceRoot}/build/llvm_lang.exe",
+            "program": "${workspaceRoot}/build/playground-config-debug/llvm_lang.exe",
             "args": [],
             "env": [],
             "cwd": "${workspaceRoot}"
@@ -18,7 +18,7 @@
             "type": "lldb-dap",
             "request": "launch",
             "name": "inter_test",
-            "program": "${workspaceRoot}/build/inter_test.exe",
+            "program": "${workspaceRoot}/build/playground-config-debug/inter_test.exe",
             "args": [],
             "env": [],
             "cwd": "${workspaceRoot}"
@@ -27,7 +27,7 @@
             "type": "lldb-dap",
             "request": "launch",
             "name": "parser_test",
-            "program": "${workspaceRoot}/build/parser_test.exe",
+            "program": "${workspaceRoot}/build/playground-config-debug/parser_test.exe",
             "args": [],
             "env": [],
             "cwd": "${workspaceRoot}"
@@ -36,7 +36,7 @@
             "type": "lldb-dap",
             "request": "launch",
             "name": "comp_test",
-            "program": "${workspaceRoot}/build/compiler_test.exe",
+            "program": "${workspaceRoot}/build/playground-config-debug/compiler_test.exe",
             "args": [],
             "env": [],
             "cwd": "${workspaceRoot}"
