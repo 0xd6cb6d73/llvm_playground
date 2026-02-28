@@ -20,7 +20,11 @@ add_executable(
 target_link_libraries(parser_test GTest::gtest_main "${PARSER_NAME}::lib")
 target_compile_features(parser_test PRIVATE cxx_std_23)
 
-add_executable(compiler_test "test/comp/comp_operators.cpp")
+add_executable(
+    compiler_test
+    "test/comp/comp_operators.cpp"
+    "test/comp/comp_func.cpp"
+)
 target_link_libraries(
     compiler_test
     GTest::gtest_main

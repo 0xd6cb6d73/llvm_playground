@@ -2,6 +2,9 @@
 
 #include "parser.hpp"
 
+#include <memory>
+#include <string>
+
 TEST(parser, func_single_arg) {
   lang::Parser parser;
   auto ret = parser.parse(R"((call printf "Hello, world!"))");
