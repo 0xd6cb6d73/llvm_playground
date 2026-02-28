@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+import std;
+
 #include "parser.hpp"
 
 TEST(ExpTypes, op_plus) {
@@ -42,4 +44,13 @@ TEST(ExpTypes, op_def) {
   const std::string test("def my_call printf");
   const auto res = lang::get_exp_type(test);
   EXPECT_EQ(lang::ParseExpType::FuncDef, res);
+}
+
+TEST(ExpTypes, symbol) {
+  lang::Parser parser;
+  const std::string test(R"(("my_str"))");
+  auto res = parser.parse(test);
+  ASSERT_EQ(lang::ParseExpType::Symbol, res.type);
+  const std::string expect("my_str");
+  EXPECT_TRUE(std::ranges::equal(expect, std::get<std::string>(res.lhs)));
 }

@@ -1,11 +1,10 @@
-#include <format>
 #include <gtest/gtest.h>
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/Interpreter.h>
-#include <utility>
 
+import std;
 
 #include "compiler.hpp"
 #include "parser.hpp"

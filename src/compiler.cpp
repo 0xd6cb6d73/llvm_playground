@@ -9,10 +9,8 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/raw_ostream.h>
-#include <optional>
-#include <stdexcept>
-#include <string>
-#include <utility>
+
+import std;
 
 namespace lang::comp {
 void Compiler::insert_function(const std::string_view name, llvm::FunctionType *signature,
@@ -39,7 +37,7 @@ llvm::Value *Compiler::insert_op(std::unique_ptr<ParseExp> exp) {
   // this->mod->print(llvm::outs(), nullptr);
   auto *lhs = std::visit(
       overloaded{
-          [this](const intptr_t val) -> llvm::Value * { return this->builder->getInt64(val); },
+          [this](const std::intptr_t val) -> llvm::Value * { return this->builder->getInt64(val); },
           [this](const std::string &val) -> llvm::Value * {
             return this->builder->getInt64(std::stoll(val));
           },
@@ -51,7 +49,7 @@ llvm::Value *Compiler::insert_op(std::unique_ptr<ParseExp> exp) {
 
   auto *rhs = std::visit(
       overloaded{
-          [this](const intptr_t val) -> llvm::Value * { return this->builder->getInt64(val); },
+          [this](const std::intptr_t val) -> llvm::Value * { return this->builder->getInt64(val); },
           [this](const std::string &val) -> llvm::Value * {
             return this->builder->getInt64(std::stoll(val));
           },

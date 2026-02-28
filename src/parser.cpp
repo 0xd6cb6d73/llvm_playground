@@ -1,16 +1,9 @@
 #include "parser.hpp"
 
-#include <cassert>
-#include <charconv>
-#include <cstdint>
-#include <exception>
-#include <string_view>
+import std;
+#include "assert.h"
 
 namespace lang {
-class invalid_expression : std::exception {};
-class unmatched_quotes : std::exception {};
-class unknown_exp_type : std::exception {};
-
 ParseExpType get_exp_type(const std::string_view str) {
   const auto type = ParseExpType(str.at(0));
   if (type == ParseExpType::OperatorPlus && str.at(1) == ' ') {
@@ -59,15 +52,19 @@ ParseExp Parser::parse_str(const std::string_view str) {
     using enum ParseExpType;
   case Int: {
     const auto ret = this->parse_int(str);
-    return ParseExp{ret.type, std::get<intptr_t>(ret.val)};
+    return ParseExp{ret.type, std::get<std::intptr_t>(ret.val)};
   }
   case Symbol: {
     // our strings need to be double-quoted
-    const auto end_pos = str.find_first_of('"', 1);
-    if (end_pos == std::string::npos) {
+    const auto first_end_pos = str.find_first_of('"', 1);
+    if (first_end_pos == std::string::npos) {
       throw unmatched_quotes();
     }
-    return ParseExp{ParseExpType::Symbol, std::string(str.begin() + 1, str.begin() + end_pos)};
+    const auto first = std::string(str.begin() + 1, str.begin() + first_end_pos);
+    // check whether there's anything else after our symbol
+    if (str.at(first_end_pos + 1) == ')') {
+      return ParseExp{ParseExpType::Symbol, std::move(first)};
+    }
   }
   case OperatorPlus:
     return this->parse_operator(str, type);
@@ -91,19 +88,19 @@ ParseExp Parser::parse_str(const std::string_view str) {
 }
 
 ParseExpSide Parser::parse_int(const std::string_view str) {
-  intptr_t val{};
+  std::intptr_t val{};
   const std::string_view num(str.data(), str.data() + str.size());
   std::from_chars(num.data(), num.data() + num.size(), val);
   return ParseExpSide{ParseExpType::Int, val};
 }
 
-size_t find_end_paren(const std::string_view str) {
+std::size_t find_end_paren(const std::string_view str) {
   // https://stackoverflow.com/questions/12752225/how-do-i-find-the-position-of-matching-parentheses-or-braces-in-a-given-piece-of
   auto pos = str.find_first_of('(');
   if (pos == std::string::npos) {
     return 0;
   }
-  int32_t paren_count = 1;
+  std::int32_t paren_count = 1;
   while (paren_count > 0) {
     if (str.at(++pos) == '(') {
       paren_count++;
@@ -115,16 +112,27 @@ size_t find_end_paren(const std::string_view str) {
 }
 
 ParseExp Parser::parse_call(const std::string_view str) {
+  bool is_second_exp = false;
   const auto first_pos = str.find_first_not_of(' ', 4);
   if (first_pos == std::string::npos) {
     throw invalid_expression();
   }
-  const auto second_pos = str.find_first_of(' ', first_pos + 1);
-  const std::string symbol(str.begin() + first_pos, str.begin() + second_pos);
-  auto args = std::make_unique<ParseExp>(
-      this->parse_str({str.begin() + second_pos + 1, str.begin() + str.size()}));
-  return ParseExp{
-      .type = ParseExpType::FuncCall, .lhs = ParseExpVal(symbol), .rhs = std::move(args)};
+  const auto first_end = str.find_first_of(' ', first_pos + 1);
+  const auto first_sub = str.find_first_of('(');
+  const auto first_end_paren = find_end_paren(str);
+  const auto second_pos = str.find_first_not_of(' ', first_end);
+  if (second_pos == std::string::npos) {
+    throw invalid_expression();
+  }
+  const auto second_sub = str.find_first_of('(', second_pos);
+  if (second_sub <= second_pos) {
+    is_second_exp = true;
+  }
+  std::string first(str.begin() + first_pos, str.begin() + first_end);
+  const std::string_view second_view(str.begin() + (is_second_exp ? second_pos + 1 : second_pos),
+                                     str.begin() + (is_second_exp ? str.size() - 1 : str.size()));
+  auto second = std::make_unique<ParseExp>(this->parse_str(second_view));
+  return ParseExp{ParseExpType::FuncCall, std::move(first), std::move(second)};
 }
 ParseExp Parser::parse_set(const std::string_view str) { return ParseExp{}; }
 ParseExp Parser::parse_def(const std::string_view str) { return ParseExp{}; }

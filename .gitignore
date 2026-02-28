@@ -8,3 +8,4 @@ bin
 .venv
 lib
 include
+CMakeUserPresets.json

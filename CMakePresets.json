@@ -1,17 +1,10 @@
 {
-    "version": 3,
+    "version": 8,
     "configurePresets": [
         {
             "name": "base-windows",
             "hidden": true,
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/",
-            "installDir": "${sourceDir}",
-            "toolchainFile": "D:\\tooling\\toolchains\\llvm-win.cmake",
-            "cacheVariables": {
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "LLVM_DIR": "D:/tooling/llvm-mingw-20251219-ucrt-x86_64/lib/cmake/llvm"
-            },
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -19,45 +12,20 @@
             }
         },
         {
-            "name": "Windows_AMD64_Debug",
-            "displayName": "Windows AMD64 Debug",
+            "name": "debug",
+            "hidden": true,
             "inherits": "base-windows",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
-            "name": "Windows_AMD64_Release",
-            "displayName": "Windows AMD64 Release",
+            "name": "release",
+            "hidden": true,
             "inherits": "base-windows",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
-        }
-    ],
-    "buildPresets": [
-        {
-            "name": "base-build",
-            "hidden": true,
-            "jobs": 0
-        },
-        {
-            "name": "Windows_AMD64_Debug",
-            "configurePreset": "Windows_AMD64_Debug",
-            "inherits": "base-build"
-        },
-        {
-            "name": "Windows_AMD64_Release",
-            "configurePreset": "Windows_AMD64_Release",
-            "inherits": "base-build"
-        }
-    ],
-    "testPresets": [
-        {
-            "name": "test-windows-clang-debug",
-            "description": "",
-            "displayName": "",
-            "configurePreset": "Windows_AMD64_Debug"
         }
     ]
 }

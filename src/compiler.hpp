@@ -1,16 +1,16 @@
 #pragma once
 
-#include "parser.hpp"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Verifier.h"
-#include <cstdint>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Value.h>
-#include <memory>
+
+import std;
+#include "parser.hpp"
 
 namespace lang::comp {
 class Compiler {
@@ -30,7 +30,7 @@ private:
                        llvm::Function::LinkageTypes link,
                        std::optional<const std::string_view> bb_name);
   void insert_main();
-  llvm::Value *insert_int(const intptr_t val);
+  llvm::Value *insert_int(const std::intptr_t val);
   llvm::Value *insert_str(const std::string_view str);
   llvm::Value *insert_op(std::unique_ptr<ParseExp> exp);
 };

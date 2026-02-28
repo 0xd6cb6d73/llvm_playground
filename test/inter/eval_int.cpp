@@ -1,5 +1,6 @@
-#include <cstdint>
 #include <gtest/gtest.h>
+
+import std;
 
 #include "../../src/inter.hpp"
 
@@ -11,7 +12,7 @@ TEST(inter, eval_num_0) {
       lang::ParseExpType::Int,
       std::move(num),
   });
-  EXPECT_EQ(std::get<intptr_t>(ret), 0);
+  EXPECT_EQ(std::get<std::intptr_t>(ret), 0);
 }
 
 TEST(inter, eval_num_1) {
@@ -21,7 +22,7 @@ TEST(inter, eval_num_1) {
       lang::ParseExpType::Int,
       std::move(num),
   });
-  EXPECT_EQ(std::get<intptr_t>(ret), 1);
+  EXPECT_EQ(std::get<std::intptr_t>(ret), 1);
 }
 
 TEST(inter, eval_num_intmax) {
@@ -31,7 +32,7 @@ TEST(inter, eval_num_intmax) {
       lang::ParseExpType::Int,
       std::move(num),
   });
-  EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT32_MAX));
+  EXPECT_EQ(std::get<std::intptr_t>(ret), static_cast<std::intptr_t>(INT32_MAX));
 }
 
 TEST(inter, eval_num_intmin) {
@@ -41,7 +42,7 @@ TEST(inter, eval_num_intmin) {
       lang::ParseExpType::Int,
       std::move(num),
   });
-  EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT32_MIN));
+  EXPECT_EQ(std::get<std::intptr_t>(ret), static_cast<std::intptr_t>(INT32_MIN));
 }
 
 TEST(inter, eval_num_int64max) {
@@ -51,7 +52,7 @@ TEST(inter, eval_num_int64max) {
       lang::ParseExpType::Int,
       std::move(num),
   });
-  EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT64_MAX));
+  EXPECT_EQ(std::get<std::intptr_t>(ret), static_cast<std::intptr_t>(INT64_MAX));
 }
 
 TEST(inter, eval_num_int64min) {
@@ -61,5 +62,5 @@ TEST(inter, eval_num_int64min) {
       lang::ParseExpType::Int,
       std::move(num),
   });
-  EXPECT_EQ(std::get<intptr_t>(ret), static_cast<intptr_t>(INT64_MIN));
+  EXPECT_EQ(std::get<std::intptr_t>(ret), static_cast<std::intptr_t>(INT64_MIN));
 }
