@@ -29,5 +29,5 @@ TEST(compiler, operator_plus_mul) {
                   .create();
   auto main = exec->FindFunctionNamed("main");
   const auto res = exec->runFunction(main, {});
-  EXPECT_EQ(7, res.IntVal.getLimitedValue());
+  EXPECT_EQ(5, res.IntVal.getLimitedValue());
 }

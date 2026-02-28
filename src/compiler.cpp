@@ -62,8 +62,6 @@ llvm::Value *Compiler::insert_op(std::unique_ptr<ParseExp> exp) {
   auto lhs_store = this->builder->CreateStore(lhs, lhs_alloc);
   auto rhs_alloc = this->builder->CreateAlloca(rhs->getType());
   auto rhs_store = this->builder->CreateStore(rhs, rhs_alloc);
-  llvm::outs() << lhs << '\n';
-  llvm::outs() << rhs << '\n';
   // insert the operator
   switch (exp->type) {
     using enum ParseExpType;
@@ -118,7 +116,7 @@ void Compiler::lower(std::unique_ptr<ParseExp> ast) {
   this->insert_main();
   auto val = this->insert_op(std::move(ast));
   auto ret = this->builder->CreateRet(val);
-  // this->mod->print(llvm::outs(), nullptr);
+  this->mod->print(llvm::outs(), nullptr);
   //  this->builder->Insert(ret);
 }
 
