@@ -4,7 +4,8 @@
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/Interpreter.h>
 
-import std;
+#include <memory>
+#include <string>
 
 #include "compiler.hpp"
 #include "parser.hpp"

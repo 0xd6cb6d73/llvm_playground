@@ -2,7 +2,7 @@
 
 #include "parser.hpp"
 
-import std;
+#include <cstdint>
 
 namespace lang {
 class Interpreter {

@@ -2,7 +2,8 @@
 #include "inter.hpp"
 
 #include "parser.hpp"
-import std;
+#include <memory>
+#include <string>
 
 int main() {
   lang::Parser parser;

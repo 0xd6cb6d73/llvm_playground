@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-import std;
-
 #include "../../src/inter.hpp"
 
 // Demonstrate some basic assertions

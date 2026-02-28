@@ -1,6 +1,8 @@
 #pragma once
-
-import std;
+#include <array>
+#include <memory>
+#include <string>
+#include <variant>
 
 namespace lang {
 namespace impl {

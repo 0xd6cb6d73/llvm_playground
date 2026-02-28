@@ -5,7 +5,6 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 set(PROJECT_NAME my_lang)
 project(${PROJECT_NAME} LANGUAGES CXX)
-set(CMAKE_CXX_MODULE_STD 1)
 
 include(FetchContent)
 FetchContent_Declare(

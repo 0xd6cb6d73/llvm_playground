@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
-import std;
-
 #include "parser.hpp"
+#include <algorithm>
 
 TEST(ExpTypes, op_plus) {
   const std::string test("+ 1 1");

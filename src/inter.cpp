@@ -2,7 +2,8 @@
 
 #include "parser.hpp"
 #include "shared.hpp"
-import std;
+
+#include <string>
 
 namespace lang {
 class unaddable_type : std::exception {};

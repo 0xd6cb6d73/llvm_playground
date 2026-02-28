@@ -9,8 +9,9 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Value.h>
 
-import std;
 #include "parser.hpp"
+
+#include <memory>
 
 namespace lang::comp {
 class Compiler {

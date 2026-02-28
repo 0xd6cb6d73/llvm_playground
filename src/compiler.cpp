@@ -10,7 +10,8 @@
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/raw_ostream.h>
 
-import std;
+#include <memory>
+#include <string>
 
 namespace lang::comp {
 void Compiler::insert_function(const std::string_view name, llvm::FunctionType *signature,

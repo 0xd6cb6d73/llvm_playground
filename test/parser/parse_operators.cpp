@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
 
-import std;
+#include "parser.hpp"
 
-#include "../../src/parser.hpp"
+#include <memory>
+#include <string>
 
 TEST(parser, parse_operator_plus) {
   lang::Parser parser;
