@@ -33,12 +33,12 @@ add_library("${PARSER_NAME}.lib" STATIC)
 add_library("${PARSER_NAME}::lib" ALIAS "${PARSER_NAME}.lib")
 target_sources(
     "${PARSER_NAME}.lib"
+    PRIVATE src/parser.cpp
     PUBLIC
         FILE_SET HEADERS
             BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src"
             FILES src/parser.hpp
 )
-target_sources("${PARSER_NAME}.lib" PRIVATE src/parser.cpp)
 target_compile_features("${PARSER_NAME}.lib" PUBLIC cxx_std_23)
 
 set(INTER_NAME "${PROJECT_NAME}_inter")
@@ -46,12 +46,12 @@ add_library("${INTER_NAME}.lib" STATIC)
 add_library("${INTER_NAME}::lib" ALIAS "${INTER_NAME}.lib")
 target_sources(
     "${INTER_NAME}.lib"
+    PRIVATE src/inter.cpp
     PUBLIC
         FILE_SET HEADERS
             BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src"
             FILES src/inter.hpp
 )
-target_sources("${INTER_NAME}.lib" PRIVATE src/inter.cpp)
 target_compile_features("${INTER_NAME}.lib" PUBLIC cxx_std_23)
 
 set(COMP_NAME "${PROJECT_NAME}_comp")
@@ -59,12 +59,12 @@ add_library("${COMP_NAME}.lib" STATIC)
 add_library("${COMP_NAME}::lib" ALIAS "${COMP_NAME}.lib")
 target_sources(
     "${COMP_NAME}.lib"
+    PRIVATE src/compiler.cpp
     PUBLIC
         FILE_SET HEADERS
             BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src"
             FILES src/compiler.hpp
 )
-target_sources("${COMP_NAME}.lib" PRIVATE src/compiler.cpp)
 target_compile_features("${COMP_NAME}.lib" PUBLIC cxx_std_23)
 target_link_libraries(
     "${COMP_NAME}.lib"
