@@ -9,8 +9,7 @@ project(${PROJECT_NAME} LANGUAGES CXX)
 include(FetchContent)
 FetchContent_Declare(
     googletest
-    URL
-        https://github.com/google/googletest/archive/main.zip
+    URL https://github.com/google/googletest/archive/main.zip
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -28,46 +27,43 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wall" "-Wextra")
 
-set(PARSER_NAME "${PROJECT_NAME}_parser")
-add_library("${PARSER_NAME}.lib" STATIC)
-add_library("${PARSER_NAME}::lib" ALIAS "${PARSER_NAME}.lib")
+add_library("${PROJECT_NAME}.parser" STATIC)
+add_library("${PROJECT_NAME}::parser" ALIAS "${PROJECT_NAME}.parser")
 target_sources(
-    "${PARSER_NAME}.lib"
+    "${PROJECT_NAME}.parser"
     PRIVATE src/parser.cpp
     PUBLIC
         FILE_SET HEADERS
             BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src"
             FILES src/parser.hpp
 )
-target_compile_features("${PARSER_NAME}.lib" PUBLIC cxx_std_23)
+target_compile_features("${PROJECT_NAME}.parser" PUBLIC cxx_std_23)
 
-set(INTER_NAME "${PROJECT_NAME}_inter")
-add_library("${INTER_NAME}.lib" STATIC)
-add_library("${INTER_NAME}::lib" ALIAS "${INTER_NAME}.lib")
+add_library("${PROJECT_NAME}.inter" STATIC)
+add_library("${PROJECT_NAME}::inter" ALIAS "${PROJECT_NAME}.inter")
 target_sources(
-    "${INTER_NAME}.lib"
+    "${PROJECT_NAME}.inter"
     PRIVATE src/inter.cpp
     PUBLIC
         FILE_SET HEADERS
             BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src"
             FILES src/inter.hpp
 )
-target_compile_features("${INTER_NAME}.lib" PUBLIC cxx_std_23)
+target_compile_features("${PROJECT_NAME}.inter" PUBLIC cxx_std_23)
 
-set(COMP_NAME "${PROJECT_NAME}_comp")
-add_library("${COMP_NAME}.lib" STATIC)
-add_library("${COMP_NAME}::lib" ALIAS "${COMP_NAME}.lib")
+add_library("${PROJECT_NAME}.comp" STATIC)
+add_library("${PROJECT_NAME}::comp" ALIAS "${PROJECT_NAME}.comp")
 target_sources(
-    "${COMP_NAME}.lib"
+    "${PROJECT_NAME}.comp"
     PRIVATE src/compiler.cpp
     PUBLIC
         FILE_SET HEADERS
             BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src"
             FILES src/compiler.hpp
 )
-target_compile_features("${COMP_NAME}.lib" PUBLIC cxx_std_23)
+target_compile_features("${PROJECT_NAME}.comp" PUBLIC cxx_std_23)
 target_link_libraries(
-    "${COMP_NAME}.lib"
+    "${PROJECT_NAME}.comp"
     PUBLIC
         LLVMCore
         LLVMexecutionengine
@@ -81,10 +77,10 @@ target_link_libraries(
 target_link_libraries(${PROJECT_NAME} PRIVATE LLVMCore)
 target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE "${INTER_NAME}.lib" "${PARSER_NAME}::lib" "${COMP_NAME}::lib"
+    PRIVATE "${PROJECT_NAME}.parser" "${PROJECT_NAME}::inter" "${PROJECT_NAME}::comp"
 )
 
-install(TARGETS ${PROJECT_NAME} "${PARSER_NAME}.lib")
+install(TARGETS ${PROJECT_NAME} "${PROJECT_NAME}.parser" "${PROJECT_NAME}.inter" "${PROJECT_NAME}.comp")
 #add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND "${PROJECT_NAME}.exe | lli out.ll")
 
 include("cmake/tests.cmake")
