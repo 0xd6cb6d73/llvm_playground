@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.31)
 
 cmake_policy(SET CMP0135 NEW)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(INSTALL_GTEST OFF)
 
 set(PROJECT_NAME my_lang)
 project(${PROJECT_NAME} LANGUAGES CXX)
@@ -71,16 +72,24 @@ target_link_libraries(
         LLVMInterpreter
         LLVMMC
         LLVMSupport
-        ${LLVM_LIBRARIES}
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE LLVMCore)
 target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE "${PROJECT_NAME}.parser" "${PROJECT_NAME}::inter" "${PROJECT_NAME}::comp"
+    PRIVATE
+        "${PROJECT_NAME}::parser"
+        "${PROJECT_NAME}::inter"
+        "${PROJECT_NAME}::comp"
+        LLVMCore
 )
 
-install(TARGETS ${PROJECT_NAME} "${PROJECT_NAME}.parser" "${PROJECT_NAME}.inter" "${PROJECT_NAME}.comp")
+install(
+    TARGETS
+        ${PROJECT_NAME}
+        "${PROJECT_NAME}.parser"
+        "${PROJECT_NAME}.inter"
+        "${PROJECT_NAME}.comp"
+)
 #add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND "${PROJECT_NAME}.exe | lli out.ll")
 
 include("cmake/tests.cmake")

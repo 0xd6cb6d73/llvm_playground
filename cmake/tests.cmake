@@ -6,7 +6,10 @@ add_executable(
     "test/inter/eval_str.cpp"
     "test/inter/eval_operators.cpp"
 )
-target_link_libraries(inter_test GTest::gtest_main "${PROJECT_NAME}::inter")
+target_link_libraries(
+    inter_test
+    PRIVATE GTest::gtest_main "${PROJECT_NAME}::inter"
+)
 target_compile_features(inter_test PRIVATE cxx_std_23)
 
 add_executable(
@@ -17,7 +20,10 @@ add_executable(
     "test/parser/parse_func.cpp"
     "test/parser/exp_types.cpp"
 )
-target_link_libraries(parser_test GTest::gtest_main "${PROJECT_NAME}::parser")
+target_link_libraries(
+    parser_test
+    PRIVATE GTest::gtest_main "${PROJECT_NAME}::parser"
+)
 target_compile_features(parser_test PRIVATE cxx_std_23)
 
 add_executable(
@@ -27,9 +33,7 @@ add_executable(
 )
 target_link_libraries(
     compiler_test
-    GTest::gtest_main
-    "${PROJECT_NAME}::comp"
-    "${PROJECT_NAME}::parser"
+    PRIVATE GTest::gtest_main "${PROJECT_NAME}::comp" "${PROJECT_NAME}::parser"
 )
 target_compile_features(compiler_test PRIVATE cxx_std_23)
 
