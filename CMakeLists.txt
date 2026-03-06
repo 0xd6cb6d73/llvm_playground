@@ -89,6 +89,7 @@ install(
         "${PROJECT_NAME}.parser"
         "${PROJECT_NAME}.inter"
         "${PROJECT_NAME}.comp"
+    FILE_SET HEADERS
 )
 #add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND "${PROJECT_NAME}.exe | lli out.ll")
 
