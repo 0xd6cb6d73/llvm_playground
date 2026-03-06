@@ -75,28 +75,28 @@ llvm::Value *Compiler::insert_op(std::unique_ptr<ParseExp> exp) {
   case OperatorPlus: {
     auto lhs_load = this->builder->CreateLoad(lhs->getType(), lhs_alloc);
     auto rhs_load = this->builder->CreateLoad(rhs->getType(), rhs_alloc);
-    auto val = this->builder->CreateAdd(lhs_load, rhs_load);
+    auto val = this->builder->CreateNSWAdd(lhs_load, rhs_load);
     // this->mod->print(llvm::outs(), nullptr);
     return val;
   }
   case OperatorMinus: {
     auto lhs_load = this->builder->CreateLoad(lhs->getType(), lhs_alloc);
     auto rhs_load = this->builder->CreateLoad(rhs->getType(), rhs_alloc);
-    auto val = this->builder->CreateSub(lhs_load, rhs_load);
+    auto val = this->builder->CreateNSWSub(lhs_load, rhs_load);
     // this->mod->print(llvm::outs(), nullptr);
     return val;
   }
   case OperatorMul: {
     auto lhs_load = this->builder->CreateLoad(lhs->getType(), lhs_alloc);
     auto rhs_load = this->builder->CreateLoad(rhs->getType(), rhs_alloc);
-    auto val = this->builder->CreateMul(lhs_load, rhs_load);
+    auto val = this->builder->CreateNSWMul(lhs_load, rhs_load);
     // this->mod->print(llvm::outs(), nullptr);
     return val;
   }
   case OperatorDiv: {
     auto lhs_load = this->builder->CreateLoad(lhs->getType(), lhs_alloc);
     auto rhs_load = this->builder->CreateLoad(rhs->getType(), rhs_alloc);
-    auto val = this->builder->CreateFDiv(lhs_load, rhs_load);
+    auto val = this->builder->CreateSDiv(lhs_load, rhs_load);
     // this->mod->print(llvm::outs(), nullptr);
     return val;
   }
